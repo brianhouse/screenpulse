@@ -1,1 +1,1 @@
-pyobjc
+pyserial

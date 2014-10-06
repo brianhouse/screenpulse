@@ -8,6 +8,19 @@ Requires Python 3.3+
 
     sudo pip-3.3 install -r requirements.txt
 
+See the massive todo for PyObjC fun    
+
+
+#### Arduino setup    
+    ls /dev/tty.*
+to see devices. then plug in the Arduino and do it again to find the port, likely in the form /dev/tty.usbserial*  (OS X 10.9)
+
+Set Arduino.app to the proper board, processor (my Nano is ATmega328), and port.
+
+Load the PulseSensorAmped_Arduino_1dot2.ino sketch -- from the Pulse Sensor developers
+
+Attach to 5v, Ground, and A0.
+
 
 ### Copyright/License
 
