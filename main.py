@@ -2,6 +2,8 @@
 
 import time
 from Cocoa import NSApplication, NSApp
+from pulse_monitor import PulseMonitor
+from housepy import log
 # from Foundation import *
 # from PyObjCTools import AppHelper
 
@@ -39,24 +41,30 @@ not in Quartz:
 fade_level = 0.1 #kCGDisplayBlendSolidColor
 
 def beat():
-    result, token = CGAcquireDisplayFadeReservation(0.4, None)
+    result, token = CGAcquireDisplayFadeReservation(0.3, None)
     if result != kCGErrorSuccess:
         print("Could not reserve display!")
         exit()
     CGDisplayFade(token, 0.075, kCGDisplayBlendNormal, fade_level, 0.5, 0.0, 0.0, True)    
     CGDisplayFade(token, 0.075, fade_level, kCGDisplayBlendNormal, 0.0, 0.0, 0.0, True)        
-    CGDisplayFade(token, 0.075, kCGDisplayBlendNormal, fade_level, 0.5, 0.0, 0.0, True)    
-    CGDisplayFade(token, 0.075, fade_level, kCGDisplayBlendNormal, 0.0, 0.0, 0.0, True)        
+    # CGDisplayFade(token, 0.075, kCGDisplayBlendNormal, fade_level, 0.5, 0.0, 0.0, True)    
+    # CGDisplayFade(token, 0.075, fade_level, kCGDisplayBlendNormal, 0.0, 0.0, 0.0, True)        
     CGReleaseDisplayFadeReservation(token)
 
 # do a fade
 print("Starting...")
-while True:
-    try:
+# while True:
+#     try:
+#         beat()
+#         time.sleep(0.75)
+#     except KeyboardInterrupt as e:
+#         print("Goodbye")
+#         break
+
+
+pulse_monitor = PulseMonitor()
+if pulse_monitor.is_alive():
+    while True:
+        bpm, hrv = pulse_monitor.queue.get()
+        log.info("BPM: %s HRV: %s" % (bpm, hrv))
         beat()
-        time.sleep(0.75)
-    except KeyboardInterrupt as e:
-        print("Goodbye")
-        break
-
-

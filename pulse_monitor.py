@@ -28,6 +28,7 @@ class PulseMonitor(threading.Thread):
         while True:
             try:
                 data = self.device.read()
+                # print(data)
                 if data == "\n".encode('ascii'):
                     message = ''.join(message).strip()
                     if len(message):
@@ -47,7 +48,10 @@ class PulseMonitor(threading.Thread):
                             pass
                     message = []
                 else:
-                    message.append(data.decode('ascii'))
+                    try:
+                        message.append(data.decode('ascii'))
+                    except Exception as e:
+                        log.error(e)
             except Exception as e:
                 # if e.message == "device reports readiness to read but returned no data (device disconnected?)":
                 #     continue
